@@ -25,7 +25,7 @@ const ColorPalette = () => {
           key={color.hex}
           onClick={() => handleCopy(color.hex)}
           title={copied === color.hex ? '✓ 복사됨' : color.hex}
-          style={{ backgroundColor: color.hex, width: '10px', height: '10px' }}
+          style={{ backgroundColor: color.hex, width: '15px', height: '15px' }}
           className="rounded-none shadow-sm border border-gray-200 hover:scale-125 transition-transform active:scale-95 flex-shrink-0"
         />
       ))}
