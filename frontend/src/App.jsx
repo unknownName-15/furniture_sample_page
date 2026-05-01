@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import ColorPalette from './components/ColorPalette';
 
 // 페이지
 import MainPage from './pages/MainPage';
@@ -118,6 +119,9 @@ const AppContent = () => {
         </main>
         <Footer />
       </div>
+
+      {/* 플로팅 컬러 팔레트 */}
+      <ColorPalette />
     </div>
   );
 };
