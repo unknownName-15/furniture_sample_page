@@ -17,6 +17,7 @@ import QnaPage from './pages/QnaPage';
 import ReviewPage from './pages/ReviewPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import SearchPage from './pages/SearchPage';
 
 const AppContent = () => {
   const [showBanner, setShowBanner] = useState(true);
@@ -24,7 +25,6 @@ const AppContent = () => {
   const [cartItems, setCartItems] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
-  // 로그인 상태: localStorage에서 초기값 불러오기
   const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem('user');
@@ -36,12 +36,10 @@ const AppContent = () => {
 
   const location = useLocation();
 
-  // 로그인 처리
   const handleLogin = (userData) => {
     setUser(userData);
   };
 
-  // 로그아웃 처리
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -115,6 +113,7 @@ const AppContent = () => {
             <Route path="/reviews" element={<ReviewPage />} />
             <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
         </main>
         <Footer />

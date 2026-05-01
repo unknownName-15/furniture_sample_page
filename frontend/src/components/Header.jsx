@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onLogout }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
 
   const categories = [
     { name: '전체 상품', path: '/products' },
@@ -21,6 +23,14 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onL
   ];
 
   const isActive = (path) => decodeURIComponent(location.pathname) === path;
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    setSearchQuery('');
+    setIsSearchOpen(false);
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm">
@@ -46,11 +56,19 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onL
             <i className={isSearchOpen ? "ri-close-line" : "ri-search-line"}></i>
           </button>
           {isSearchOpen && (
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요"
-              className="hidden md:block border-b border-gray-200 focus:border-[#5D4037] outline-none text-sm py-1 w-48 animate-fadeIn font-light"
-            />
+            <form onSubmit={handleSearch} className="hidden md:flex items-center gap-2">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="검색어를 입력하세요"
+                autoFocus
+                className="border-b border-gray-200 focus:border-[#5D4037] outline-none text-sm py-1 w-48 animate-fadeIn font-light"
+              />
+              <button type="submit" className="text-[#5D4037] text-sm hover:scale-110 transition">
+                <i className="ri-search-line"></i>
+              </button>
+            </form>
           )}
         </div>
 
@@ -59,7 +77,6 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onL
         </Link>
 
         <div className="flex gap-4 md:gap-8 text-[#5D4037] items-center flex-1 justify-end">
-          {/* 로그인 상태에 따라 다르게 표시 */}
           <div className="hidden lg:flex items-center gap-4 text-[11px] uppercase tracking-widest font-medium text-gray-400">
             {user ? (
               <>
@@ -90,6 +107,23 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onL
           </button>
         </div>
       </nav>
+
+      {/* 모바일 검색창 */}
+      {isSearchOpen && (
+        <form onSubmit={handleSearch} className="md:hidden px-4 pb-4 flex items-center gap-2 border-t border-gray-50">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="검색어를 입력하세요"
+            autoFocus
+            className="flex-1 border-b border-gray-200 focus:border-[#5D4037] outline-none text-sm py-2 font-light"
+          />
+          <button type="submit" className="text-[#5D4037] text-lg">
+            <i className="ri-search-line"></i>
+          </button>
+        </form>
+      )}
 
       <div className="border-t border-gray-100 py-4 px-4 overflow-x-auto no-scrollbar bg-white">
         <ul className="flex justify-start md:justify-center items-center gap-7 md:gap-10 text-[12px] md:text-[13px] whitespace-nowrap">
