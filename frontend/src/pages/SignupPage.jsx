@@ -39,7 +39,7 @@ const SignupPage = () => {
 
       if (res.success) {
         alert('WOOD & SOUL의 가족이 되신 것을 환영합니다! :)');
-        navigate('/login');
+        navigate('/login', { state: { welcome: true } });
       } else {
         setError(res.message || '회원가입에 실패했습니다.');
       }

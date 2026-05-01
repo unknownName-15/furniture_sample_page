@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { login } from '../api/auth';
 
 const LoginPage = ({ onLogin }) => {
+  const location = useLocation();
+  const isWelcome = location.state?.welcome;
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -45,6 +48,12 @@ const LoginPage = ({ onLogin }) => {
         <h2 className="text-3xl font-serif text-[#5D4037] mb-4 uppercase tracking-widest">Login</h2>
         <p className="text-gray-400 text-xs font-light italic">다시 만나서 반가워요. WOOD & SOUL입니다.</p>
       </div>
+
+      {isWelcome && (
+        <p className="text-[#5D4037] text-xs text-center font-light mb-6 bg-[#F9F7F5] py-3 px-4 border border-[#A1887F]">
+          WOOD & SOUL의 가족이 되신 것을 환영합니다! 🌿
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6 font-sans">
         <div>
