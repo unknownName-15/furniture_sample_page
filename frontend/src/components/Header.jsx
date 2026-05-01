@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount }) => {
+const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount, user, onLogout }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
 
@@ -24,7 +24,6 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount }) => {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-sm">
-      {/* 최상단 홍보 배너 */}
       {showBanner && (
         <div className="bg-black text-white py-2 px-4 flex justify-between items-center text-[10px] md:text-sm font-sans font-light">
           <div className="flex-1 text-center tracking-wider">첫 쇼핑 지원 3,000원 할인 쿠폰 증정</div>
@@ -38,42 +37,45 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount }) => {
         </div>
       )}
 
-      {/* 메인 로고 및 기능 바 */}
       <nav className="flex justify-between items-center px-4 md:px-10 py-5 md:py-7">
-        
-        {/* 검색창 (클릭 시 입력창 노출) */}
         <div className="flex items-center gap-4 flex-1">
-          <button 
+          <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             className="text-[#5D4037] text-2xl hover:scale-110 transition"
           >
             <i className={isSearchOpen ? "ri-close-line" : "ri-search-line"}></i>
           </button>
           {isSearchOpen && (
-            <input 
-              type="text" 
-              placeholder="검색어를 입력하세요" 
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요"
               className="hidden md:block border-b border-gray-200 focus:border-[#5D4037] outline-none text-sm py-1 w-48 animate-fadeIn font-light"
             />
           )}
         </div>
 
-        {/* 로고 */}
         <Link to="/" className="text-2xl md:text-3xl font-bold text-[#5D4037] font-serif tracking-tight flex-1 text-center">
           WOOD & SOUL
         </Link>
 
-        {/* 회원가입, 장바구니, 메뉴 */}
         <div className="flex gap-4 md:gap-8 text-[#5D4037] items-center flex-1 justify-end">
-          
-          {/* 회원가입/로그인 (텍스트 메뉴) */}
+          {/* 로그인 상태에 따라 다르게 표시 */}
           <div className="hidden lg:flex items-center gap-4 text-[11px] uppercase tracking-widest font-medium text-gray-400">
-            <Link to="/login" className="hover:text-[#5D4037] transition">로그인</Link>
-            <span className="text-gray-200">|</span>
-            <Link to="/signup" className="hover:text-[#5D4037] transition">회원가입</Link>
+            {user ? (
+              <>
+                <span className="text-[#5D4037] font-medium">{user.name}님</span>
+                <span className="text-gray-200">|</span>
+                <button onClick={onLogout} className="hover:text-[#5D4037] transition">로그아웃</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="hover:text-[#5D4037] transition">로그인</Link>
+                <span className="text-gray-200">|</span>
+                <Link to="/signup" className="hover:text-[#5D4037] transition">회원가입</Link>
+              </>
+            )}
           </div>
 
-          {/* 장바구니 */}
           <Link to="/cart" className="relative transition hover:text-[#A1887F] text-2xl">
             <i className="ri-shopping-bag-line"></i>
             {cartCount > 0 && (
@@ -82,15 +84,13 @@ const Header = ({ showBanner, setShowBanner, setIsMenuOpen, cartCount }) => {
               </span>
             )}
           </Link>
-          
-          {/* 메뉴 */}
+
           <button onClick={() => setIsMenuOpen(true)} className="hover:scale-110 transition text-2xl">
             <i className="ri-menu-line"></i>
           </button>
         </div>
       </nav>
 
-      {/* 카테고리 바 */}
       <div className="border-t border-gray-100 py-4 px-4 overflow-x-auto no-scrollbar bg-white">
         <ul className="flex justify-start md:justify-center items-center gap-7 md:gap-10 text-[12px] md:text-[13px] whitespace-nowrap">
           {categories.map((c) => (

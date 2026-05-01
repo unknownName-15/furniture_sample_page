@@ -1,20 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-
-export const allProducts = [
-  { id: 1, category: '식탁', name: '프리미엄 오크 원목 식탁', price: '₩ 2,450,000', img: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=1000' },
-  { id: 2, category: '의자', name: '장인 정신 월넛 체어', price: '₩ 890,000', img: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=1000' },
-  { id: 3, category: '테이블', name: '미니멀 사이드 테이블', price: '₩ 420,000', img: 'https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=1000' },
-  { id: 4, category: '서랍장', name: '원목 와이드 서랍장', price: '₩ 1,650,000', img: 'https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?q=80&w=1000' },
-  { id: 5, category: '식탁', name: '클래식 오크 식탁 세트', price: '₩ 3,200,000', img: 'https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?q=80&w=1000' },
-  { id: 6, category: '소파', name: '모던 벨벳 3인 소파', price: '₩ 2,100,000', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1000' },
-  { id: 7, category: '테이블', name: '라운드 월넛 테이블', price: '₩ 780,000', img: 'https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?q=80&w=1000' },
-  { id: 8, category: '서랍장', name: '슬림 우드 서랍장', price: '₩ 1,250,000', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?q=80&w=1000' },
-];
+import { allProducts } from '../data/shopData';
 
 const CategoryPage = ({ isMain = false }) => {
   const { categoryName } = useParams();
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [categoryName]);
@@ -24,6 +14,10 @@ const CategoryPage = ({ isMain = false }) => {
     : allProducts.filter(p => p.category === categoryName);
 
   const displayProducts = isMain ? filteredProducts.slice(0, 4) : filteredProducts;
+
+  // price가 숫자일 경우 포맷팅, 문자열이면 그대로 사용
+  const formatPrice = (price) =>
+    typeof price === 'number' ? `₩ ${price.toLocaleString()}` : price;
 
   return (
     <div className={`max-w-6xl mx-auto px-4 md:px-6 animate-fadeIn ${isMain ? 'py-20 md:py-32' : 'py-20'}`}>
@@ -48,7 +42,7 @@ const CategoryPage = ({ isMain = false }) => {
             </div>
             <div className="mt-5 text-center">
               <h4 className="text-sm md:text-base font-medium text-[#2C2C2C] group-hover:text-[#8D6E63] transition-colors">{item.name}</h4>
-              <p className="text-[#8D6E63] text-xs md:text-sm mt-2 font-semibold font-sans">{item.price}</p>
+              <p className="text-[#8D6E63] text-xs md:text-sm mt-2 font-semibold font-sans">{formatPrice(item.price)}</p>
             </div>
           </Link>
         ))}
